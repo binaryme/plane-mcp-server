@@ -12,6 +12,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.routing import Mount
 
 from plane_mcp.server import get_header_mcp, get_oauth_mcp, get_stdio_mcp
+import plane_mcp.patch  # Apply legacy patch
 
 logger = get_logger(__name__)
 
