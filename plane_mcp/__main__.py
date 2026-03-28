@@ -4,6 +4,11 @@ import os
 import sys
 from contextlib import asynccontextmanager
 from enum import Enum
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+import plane_mcp.patch  # Apply legacy API patch
 
 import uvicorn
 from fastmcp.utilities.logging import get_logger
@@ -35,6 +40,12 @@ async def combined_lifespan(oauth_app, header_app, sse_app):
 
 def main() -> None:
     """Run the MCP server."""
+    # Load .env from the project root (parent of plane_mcp directory)
+    current_dir = Path(__file__).parent
+    project_root = current_dir.parent
+    env_path = project_root / ".env"
+    load_dotenv(dotenv_path=env_path)
+
     server_mode = ServerMode.STDIO
     if len(sys.argv) > 1:
         server_mode = ServerMode(sys.argv[1])

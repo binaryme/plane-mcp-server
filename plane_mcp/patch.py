@@ -9,11 +9,15 @@ from plane.models.work_items import (
 )
 from plane.models.query_params import RetrieveQueryParams, WorkItemQueryParams
 
-print("Applying LEGACY API patch: /work-items/ -> /issues/")
+import sys
+
+print("Applying LEGACY API patch: /work-items/ -> /issues/", file=sys.stderr)
 
 def legacy_create(self, workspace_slug: str, project_id: str, data: CreateWorkItem) -> WorkItem:
+    url = f"{workspace_slug}/projects/{project_id}/issues"
+    print(f"[PATCH] CREATE {url} with data: {data.model_dump(exclude_none=True)}", file=sys.stderr)
     response = self._post(
-        f"{workspace_slug}/projects/{project_id}/issues",
+        url,
         data.model_dump(exclude_none=True),
     )
     return WorkItem.model_validate(response)
@@ -26,8 +30,10 @@ def legacy_retrieve(
     params: RetrieveQueryParams | None = None,
 ) -> WorkItemDetail:
     query_params = params.model_dump(exclude_none=True) if params else None
+    url = f"{workspace_slug}/projects/{project_id}/issues/{work_item_id}"
+    print(f"[PATCH] RETRIEVE {url} params={query_params}", file=sys.stderr)
     response = self._get(
-        f"{workspace_slug}/projects/{project_id}/issues/{work_item_id}",
+        url,
         params=query_params,
     )
     return WorkItemDetail.model_validate(response)
@@ -41,8 +47,10 @@ def legacy_retrieve_by_identifier(
 ) -> WorkItemDetail:
     # Note: verify if this endpoint existed in legacy. Assuming yes for now.
     query_params = params.model_dump(exclude_none=True) if params else None
+    url = f"{workspace_slug}/issues/{project_identifier}-{issue_identifier}"
+    print(f"[PATCH] RETRIEVE_BY_ID {url} params={query_params}", file=sys.stderr)
     response = self._get(
-        f"{workspace_slug}/issues/{project_identifier}-{issue_identifier}",
+        url,
         params=query_params,
     )
     return WorkItemDetail.model_validate(response)
@@ -54,14 +62,18 @@ def legacy_update(
     work_item_id: str,
     data: UpdateWorkItem,
 ) -> WorkItem:
+    url = f"{workspace_slug}/projects/{project_id}/issues/{work_item_id}"
+    print(f"[PATCH] UPDATE {url} with data={data.model_dump(exclude_none=True)}", file=sys.stderr)
     response = self._patch(
-        f"{workspace_slug}/projects/{project_id}/issues/{work_item_id}",
+        url,
         data.model_dump(exclude_none=True),
     )
     return WorkItem.model_validate(response)
 
 def legacy_delete(self, workspace_slug: str, project_id: str, work_item_id: str) -> None:
-    return self._delete(f"{workspace_slug}/projects/{project_id}/issues/{work_item_id}")
+    url = f"{workspace_slug}/projects/{project_id}/issues/{work_item_id}"
+    print(f"[PATCH] DELETE {url}", file=sys.stderr)
+    return self._delete(url)
 
 def legacy_list(
     self,
@@ -70,8 +82,10 @@ def legacy_list(
     params: WorkItemQueryParams | None = None,
 ) -> PaginatedWorkItemResponse:
     query_params = params.model_dump(exclude_none=True) if params else None
+    url = f"{workspace_slug}/projects/{project_id}/issues"
+    print(f"[PATCH] LIST {url} params={query_params}", file=sys.stderr)
     response = self._get(
-        f"{workspace_slug}/projects/{project_id}/issues", params=query_params
+        url, params=query_params
     )
     return PaginatedWorkItemResponse.model_validate(response)
 
@@ -87,7 +101,9 @@ def legacy_search(
     # Search might be different, but trying /issues/search or similar
     # Legacy commonly used global search or per-project.
     # Keeping it as /issues/search for now, hoping for the best.
-    response = self._get(f"{workspace_slug}/issues/search", params=search_params)
+    url = f"{workspace_slug}/issues/search"
+    print(f"[PATCH] SEARCH {url} params={search_params}", file=sys.stderr)
+    response = self._get(url, params=search_params)
     return WorkItemSearch.model_validate(response)
 
 # Apply patches
