@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('/Users/lluisoleart/.claude/settings.json'\\)\\); print\\('top-level keys:', list\\(d.keys\\(\\)\\)\\); print\\('has mcpServers:', 'mcpServers' in d\\); print\\('mcpServers keys:', list\\(d.get\\('mcpServers', {}\\).keys\\(\\)\\) if 'mcpServers' in d else 'N/A'\\)\")",
+      "Read(//Users/lluisoleart/**)",
+      "Read(//Users/lluisoleart/Library/Application Support/Code - Insiders/User/**)",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('/Users/lluisoleart/.claude.json'\\)\\); print\\('top-level keys:', list\\(d.keys\\(\\)\\)[:20]\\); print\\('has mcpServers:', 'mcpServers' in d\\); print\\('mcpServers keys:', list\\(d.get\\('mcpServers', {}\\).keys\\(\\)\\) if 'mcpServers' in d else 'N/A'\\)\")",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('/Users/lluisoleart/.claude.json'\\)\\); print\\(json.dumps\\(d['mcpServers'], indent=2\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "mcp__coolify__teams",
+      "mcp__coolify__list_applications",
+      "mcp__coolify__get_application",
+      "mcp__coolify__projects",
+      "mcp__coolify__github_apps",
+      "mcp__coolify__environments",
+      "mcp__coolify__application"
+    ],
+    "additionalDirectories": [
+      "/Users/lluisoleart"
+    ]
+  }
+}
