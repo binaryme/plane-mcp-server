@@ -967,10 +967,11 @@ wheels = [
 
 [[package]]
 name = "plane-mcp-server"
-version = "0.2.0"
+version = "0.3.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastmcp" },
+    { name = "httpx" },
     { name = "mcp" },
     { name = "plane-sdk" },
     { name = "py-key-value-aio", extra = ["redis"] },
@@ -988,9 +989,10 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "black", marker = "extra == 'dev'", specifier = ">=23.0.0" },
-    { name = "fastmcp", specifier = "==2.14.1" },
-    { name = "mcp", specifier = "==1.24.0" },
-    { name = "plane-sdk", specifier = "==0.2.2" },
+    { name = "fastmcp", specifier = ">=2.14.1" },
+    { name = "httpx", specifier = ">=0.27.0" },
+    { name = "mcp", specifier = ">=1.24.0" },
+    { name = "plane-sdk", specifier = ">=0.2.8" },
     { name = "py-key-value-aio", extras = ["redis"], specifier = "==0.3.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0.0" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.21.0" },
@@ -1001,15 +1003,15 @@ provides-extras = ["dev"]
 
 [[package]]
 name = "plane-sdk"
-version = "0.2.2"
+version = "0.2.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/44/ee/ac7c0e4eea10b4324bb2b91fd7ef0bd690dc0d7c75ad63d0133975917c6e/plane_sdk-0.2.2.tar.gz", hash = "sha256:257e0068d91d56479909fc3c543c4d56668e76c69fd0561f352f420305662348", size = 45060, upload-time = "2025-11-29T10:00:30.222Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ff/c0/18290a9cfefa5c5c2324c93545e5491ddfe86d3a980cccf48a47b544fd6b/plane_sdk-0.2.9.tar.gz", hash = "sha256:cea6856b32a49e3d6f80f0b898a5654f737780b246d1c457d71454385de1263c", size = 47665, upload-time = "2026-04-10T10:55:55.127Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/10/a1/7deeb618fa1b7f90bfa89ec5ec93e5d50c9958cfbd5336c5bd7823f8b15a/plane_sdk-0.2.2-py3-none-any.whl", hash = "sha256:94765d29d870e40cc2bc8a067f2b917cf3ab4b6dbc249914900f0366b8996e4f", size = 65759, upload-time = "2025-11-29T10:00:28.845Z" },
+    { url = "https://files.pythonhosted.org/packages/43/f1/27163d432b0397101ec8ac1b83d5021c55d7c0ebfd4f2e9dca7e6c886f77/plane_sdk-0.2.9-py3-none-any.whl", hash = "sha256:42548863bceb44be91c43cd512db489498fc3cb0d0559ecc6c787398d0967273", size = 71034, upload-time = "2026-04-10T10:55:54.133Z" },
 ]
 
 [[package]]
