@@ -15,6 +15,7 @@ from plane.models.query_params import PaginatedQueryParams
 from plane.models.users import UserLite
 
 from plane_mcp.client import get_plane_client_context
+from plane_mcp.tools.states import seed_default_states
 
 
 def register_project_tools(mcp: FastMCP) -> None:
@@ -80,14 +81,22 @@ def register_project_tools(mcp: FastMCP) -> None:
         external_source: str | None = None,
         external_id: str | None = None,
         is_issue_type_enabled: bool | None = None,
+        seed_states: bool = True,
     ) -> Project:
         """
         Create a new project.
+
+        On this self-hosted Plane, creating a project via the API does NOT
+        auto-provision workflow states — and a stateless project silently
+        drops every issue created against it. With seed_states=True (default)
+        this tool provisions the standard states right after creation so the
+        project is immediately usable.
 
         Args:
             workspace_slug: The workspace slug identifier
             name: Project name
             identifier: Project identifier (e.g., "MP" for "My Project")
+            seed_states: Provision default workflow states after creation (default True)
             description: Project description
             project_lead: UUID of the project lead user
             default_assignee: UUID of the default assignee user
@@ -133,7 +142,15 @@ def register_project_tools(mcp: FastMCP) -> None:
             is_issue_type_enabled=is_issue_type_enabled,
         )
 
-        return client.projects.create(workspace_slug=workspace_slug, data=data)
+        project = client.projects.create(workspace_slug=workspace_slug, data=data)
+
+        if seed_states:
+            try:
+                seed_default_states(client, workspace_slug, str(project.id))
+            except Exception:  # noqa: BLE001 — don't fail project creation on state seeding
+                pass
+
+        return project
 
     @mcp.tool()
     def retrieve_project(project_id: str) -> Project:
